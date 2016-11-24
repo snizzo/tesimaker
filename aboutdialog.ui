@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>302</width>
-    <height>165</height>
+    <width>420</width>
+    <height>443</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -29,7 +29,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Tesi Maker (alpha)&lt;/span&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p align=&quot;center&quot;&gt;Authors:&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Claudio Desideri (happy.snizzo@gmail.com)&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Lara Vignotto (lara.vignotto@gmail.com)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Tesi Maker (alpha)&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;img src=&quot;:/images/tm_logo_1.svg&quot; width=&quot;200&quot; height=&quot;180&quot;/&gt;&lt;/p&gt;&lt;hr/&gt;&lt;p align=&quot;center&quot;&gt;Authors:&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Claudio Desideri (happy.snizzo@gmail.com)&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Lara Vignotto (lara.vignotto@gmail.com)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
