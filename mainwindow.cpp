@@ -14,12 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    /*
-    ## Choose a lexer
-    lexer = QsciLexerPython()
-    lexer.setDefaultFont(font)
-    editor.setLexer(lexer)
-    */
+    
 
     //ui->textEdit->setMarginWidth(0,"00000");
     ui->textEdit->setMarginLineNumbers(0, true);
