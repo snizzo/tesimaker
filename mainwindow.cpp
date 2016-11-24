@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     editor.setLexer(lexer)
     */
 
-    ui->textEdit->setMarginWidth(0,"00000");
+    //ui->textEdit->setMarginWidth(0,"00000");
     ui->textEdit->setMarginLineNumbers(0, true);
 
     //ui->textEdit->setEdgeMode(QsciScintilla::EdgeLine);
@@ -29,11 +29,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->textEdit->setEdgeColor(QColor("#FF0000"));
 
     ui->textEdit->setFolding(QsciScintilla::BoxedTreeFoldStyle);
-    ui->textEdit->setBraceMatching(QsciScintilla::SloppyBraceMatch);
+    //ui->textEdit->setBraceMatching(QsciScintilla::SloppyBraceMatch);
     ui->textEdit->setCaretLineVisible(true);
     ui->textEdit->setCaretLineBackgroundColor(QColor("#CDA869"));
     ui->textEdit->setMarginsBackgroundColor(QColor("#333333"));
-    ui->textEdit->setMarginsForegroundColor(QColor("#CCCCCC"));
+    //ui->textEdit->setMarginsForegroundColor(QColor("#CCCCCC"));
     ui->textEdit->setFoldMarginColors(QColor("#99CC66"),QColor("#333300"));
 
     QsciLexerPython * lexer = new QsciLexerPython;
