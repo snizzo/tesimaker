@@ -14,19 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    /*
-    ## Choose a lexer
-    lexer = QsciLexerPython()
-    lexer.setDefaultFont(font)
-    editor.setLexer(lexer)
-    */
-
     ui->textEdit->setMarginWidth(0,"00000");
     ui->textEdit->setMarginLineNumbers(0, true);
-
-    //ui->textEdit->setEdgeMode(QsciScintilla::EdgeLine);
-    //ui->textEdit->setEdgeColumn(80);
-    //ui->textEdit->setEdgeColor(QColor("#FF0000"));
 
     ui->textEdit->setFolding(QsciScintilla::BoxedTreeFoldStyle);
     ui->textEdit->setBraceMatching(QsciScintilla::SloppyBraceMatch);
