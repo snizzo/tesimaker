@@ -19,6 +19,8 @@ private slots:
     void on_actionQuit_triggered();
 
     void on_actionAbout_triggered();
+    void saveFile();
+    void loadFile();
 
 private:
     Ui::MainWindow *ui;
