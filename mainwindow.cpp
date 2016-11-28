@@ -2,11 +2,14 @@
 #include "ui_mainwindow.h"
 
 #include "aboutdialog.h"
+#include "simplelatexparser.h"
+#include "languageelement.h"
 
 #include <QtGui/QColor>
 #include <QtCore/QDebug>
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <QVector>
 
 #include "Qsci/qscilexerpython.h"
 
@@ -20,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    //instantiating parser
+    parser = new SimpleLatexParser;
+
     ui->setupUi(this);
 
     ui->textEdit->setMarginWidth(0,"00000");
@@ -36,19 +42,20 @@ MainWindow::MainWindow(QWidget *parent) :
     QsciLexerPython * lexer = new QsciLexerPython;
     ui->textEdit->setLexer(lexer);
 
-
+    //parser connections
+    connect(parser, SIGNAL(errorParsing(QString)), this, SLOT(onParsingError(QString)));
+    //menu connections
     connect(ui->actionSave, SIGNAL(triggered(bool)), this, SLOT(saveFile()));
     connect(ui->actionLoad, SIGNAL(triggered(bool)), this, SLOT(loadFile()));
+    connect(ui->action_Genera, SIGNAL(triggered(bool)), this, SLOT(generate()));
+
     /*
-     * code mainly realted to parser
-     * will actually implement one day when there will be a real necessity
-     *
-    QString str("{'one': 1,"
-                    "\"two\": '2',"
-                    "\"'3'\": [3.14, 10, [7, 8], \"\\\"quoted string\\\"\"],"
-                    "'4': size(640, 480),"
-                    "'date': dateTime(date(2013, 2, 27), time(12, 0)),"
-                    "'number count': {'1': 1, '2': 2, '3': 3}}");
+    QStringList translation;
+
+    QString str2("[tesi]"
+                "ciaomondo[grasetto]io sono belllo 9.45[fine:grassetto]"
+                "[finee:tesi]");
+    QString str("[]");
 
     // Insert the string into the input stream.
     YY_BUFFER_STATE bufferState = yy_scan_string(str.toUtf8().constData());
@@ -85,6 +92,16 @@ void MainWindow::saveFile()
     }
 }
 
+void MainWindow::generate()
+{
+    QVector<LanguageElement> elements = parser->generateElements(ui->textEdit->text());
+
+    for(int i=0;i<elements.length();i++)
+    {
+        qDebug().noquote() << elements.at(i);
+    }
+}
+
 void MainWindow::loadFile()
 {
     QString filepath = QFileDialog::getOpenFileName(this,"Open File",QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0),
@@ -96,6 +113,15 @@ void MainWindow::loadFile()
         QTextStream stream(&file);
         ui->textEdit->setText(stream.readAll());
     }
+
+}
+
+/**
+ * @brief handle parsing errors
+ * @param error occured when parsing text
+ */
+void MainWindow::onParsingError(QString error)
+{
 
 }
 

@@ -24,12 +24,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    simplelatexparser.cpp \
+    languageelement.cpp
 
 HEADERS  += mainwindow.h \
     aboutdialog.h \
     lexer.l \
-    parser.y
+    parser.y \
+    simplelatexparser.h \
+    languageelement.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui

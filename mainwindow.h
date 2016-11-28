@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "simplelatexparser.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,9 +22,12 @@ private slots:
     void on_actionAbout_triggered();
     void saveFile();
     void loadFile();
+    void generate();
+    void onParsingError(QString error);
 
 private:
     Ui::MainWindow *ui;
+    SimpleLatexParser * parser;
 };
 
 #endif // MAINWINDOW_H

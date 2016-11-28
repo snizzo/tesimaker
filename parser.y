@@ -47,6 +47,7 @@ void yyerror(const char *s);
 %token TOK_RIGHTBRACKET
 %token TOK_COMMA
 %token TOK_COLON
+%token TOK_WHITESPACES
 
 // Define the tokens for the keywords.
 %token TOK_SIZE
@@ -113,160 +114,13 @@ void yyerror(const char *s);
 %%
 
 /* Main expression to check. */
-start: variant {qDebug() << *$1;};
+start: tag
 
-variant: number
-       | TOK_BOOLEAN
-       | size
-       | sizeF
-       | point
-       | pointF
-       | rect
-       | rectF
-       | line
-       | lineF
-       | date
-       | time
-       | dateTime
-       | color
-       | bytes
-       | url
-       | TOK_STRING
-       | variantList
-       | variantMap
-       ;
+tag:    TOK_LEFTBRACKET TOK_RIGHTBRACKET
 
-rect: TOK_RECT TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QRect());}
-    | TOK_RECT TOK_LEFTPAREN point TOK_COMMA point TOK_RIGHTPAREN {
-          // $$ is a reference to the result of the espression.
-          // $1, $2, $3, ..., $N are references to each expression.
-          $$ = new QVariant();
-          *$$ = QRect($3->toPoint(), $5->toPoint());
-      }
-    | TOK_RECT TOK_LEFTPAREN point TOK_COMMA size TOK_RIGHTPAREN {
-          $$ = new QVariant();
-          *$$ = QRect($3->toPoint(), $5->toSize());
-      }
-    | TOK_RECT TOK_LEFTPAREN number TOK_COMMA number TOK_COMMA number TOK_COMMA number TOK_RIGHTPAREN {
-          $$ = new QVariant();
-          *$$ = QRect($3->toFloat(), $5->toFloat(), $7->toFloat(), $9->toFloat());
-      }
-    ;
+%%
 
-rectF: TOK_RECTF TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QRectF());}
-     | TOK_RECTF TOK_LEFTPAREN pointF TOK_COMMA pointF TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QRectF($3->toPointF(), $5->toPointF());
-       }
-     | TOK_RECTF TOK_LEFTPAREN pointF TOK_COMMA sizeF TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QRectF($3->toPointF(), $5->toSizeF());
-       }
-     | TOK_RECTF TOK_LEFTPAREN rect TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QRectF($3->toRect());
-       }
-     | TOK_RECTF TOK_LEFTPAREN number TOK_COMMA number TOK_COMMA number TOK_COMMA number TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QRectF($3->toFloat(), $5->toFloat(), $7->toFloat(), $9->toFloat());
-       }
-     ;
-
-line: TOK_LINE TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QLine());}
-    | TOK_LINE TOK_LEFTPAREN point TOK_COMMA point TOK_RIGHTPAREN {
-          $$ = new QVariant();
-          *$$ = QLine($3->toPoint(), $5->toPoint());
-      }
-    | TOK_LINE TOK_LEFTPAREN number TOK_COMMA number TOK_COMMA number TOK_COMMA number TOK_RIGHTPAREN {
-          $$ = new QVariant();
-          *$$ = QLine($3->toFloat(), $5->toFloat(), $7->toFloat(), $9->toFloat());
-      }
-    ;
-
-lineF: TOK_LINEF TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QLineF());}
-     | TOK_LINEF TOK_LEFTPAREN pointF TOK_COMMA pointF TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QLineF($3->toPointF(), $5->toPointF());
-       }
-     | TOK_LINEF TOK_LEFTPAREN line TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QLineF($3->toLine());
-       }
-     | TOK_LINEF TOK_LEFTPAREN number TOK_COMMA number TOK_COMMA number TOK_COMMA number TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QLineF($3->toFloat(), $5->toFloat(), $7->toFloat(), $9->toFloat());
-       }
-     ;
-
-point: TOK_POINT TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QPoint());}
-     | TOK_POINT TOK_LEFTPAREN number TOK_COMMA number TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QPoint($3->toFloat(), $5->toFloat());
-       }
-     ;
-
-pointF: TOK_POINTF TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QPointF());}
-      | TOK_POINTF TOK_LEFTPAREN point TOK_RIGHTPAREN {
-            $$ = new QVariant();
-            *$$ = QPointF($3->toPoint());
-        }
-      | TOK_POINTF TOK_LEFTPAREN number TOK_COMMA number TOK_RIGHTPAREN {
-            $$ = new QVariant();
-            *$$ = QPointF($3->toFloat(), $5->toFloat());
-        }
-      ;
-
-size: TOK_SIZE TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QSize());}
-    | TOK_SIZE TOK_LEFTPAREN number TOK_COMMA number TOK_RIGHTPAREN {
-          $$ = new QVariant();
-          *$$ = QSize($3->toFloat(), $5->toFloat());
-      }
-    ;
-
-sizeF: TOK_SIZEF TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QSizeF());}
-     | TOK_SIZEF TOK_LEFTPAREN size TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QSizeF($3->toSize());
-       }
-     | TOK_SIZEF TOK_LEFTPAREN number TOK_COMMA number TOK_RIGHTPAREN {
-           $$ = new QVariant();
-           *$$ = QSizeF($3->toFloat(), $5->toFloat());
-       }
-     ;
-
-dateTime: TOK_DATETIME TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QDateTime());}
-        | TOK_DATETIME TOK_LEFTPAREN date TOK_RIGHTPAREN {
-              $$ = new QVariant();
-              *$$ = QDateTime($3->toDate());
-          }
-        | TOK_DATETIME TOK_LEFTPAREN date TOK_COMMA time TOK_RIGHTPAREN {
-              $$ = new QVariant();
-              *$$ = QDateTime($3->toDate(), $5->toTime());
-          }
-        ;
-
-date: TOK_DATE TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QDate());}
-    | TOK_DATE TOK_LEFTPAREN number TOK_COMMA number TOK_COMMA number TOK_RIGHTPAREN {
-          $$ = new QVariant();
-          *$$ = QDate($3->toFloat(), $5->toFloat(), $7->toFloat());
-      }
-    ;
-
-time: TOK_TIME TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QTime());}
-    | TOK_TIME TOK_LEFTPAREN number TOK_COMMA number TOK_RIGHTPAREN {
-          $$ = new QVariant();
-          *$$ = QTime($3->toFloat(), $5->toFloat());
-      }
-    | TOK_TIME TOK_LEFTPAREN number TOK_COMMA number TOK_COMMA number TOK_RIGHTPAREN {
-          $$ = new QVariant();
-          *$$ = QTime($3->toFloat(), $5->toFloat(), $7->toFloat());
-      }
-    | TOK_TIME TOK_LEFTPAREN number TOK_COMMA number TOK_COMMA number TOK_COMMA number TOK_RIGHTPAREN {
-          $$ = new QVariant();
-          *$$ = QTime($3->toFloat(), $5->toFloat(), $7->toFloat(), $9->toFloat());
-      }
-    ;
-
+/*
 color: TOK_COLOR TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QColor());}
      | TOK_COLOR TOK_LEFTPAREN TOK_STRING TOK_RIGHTPAREN {
            $$ = new QVariant();
@@ -294,79 +148,7 @@ url: TOK_URL TOK_LEFTPAREN TOK_RIGHTPAREN {$$ = new QVariant(QUrl());}
          *$$ = QUrl($3->toString());
      }
    ;
-
-variantList: TOK_LEFTBRACKET TOK_RIGHTBRACKET {$$ = new QVariant(QVariantList());}
-           | TOK_LEFTBRACKET variantListItems TOK_RIGHTBRACKET {
-                 $$ = new QVariant();
-                 *$$ = $2->toList();
-             }
-           ;
-
-variantListItems: variant {
-                      $$ = new QVariant();
-
-                      QVariantList variantList;
-
-                      variantList << *$1;
-
-                      *$$ = variantList;
-                  }
-                | variantListItems TOK_COMMA variant {
-                      $$ = new QVariant();
-
-                      QVariantList variantList($1->toList());
-
-                      variantList << *$3;
-
-                      *$$ = variantList;
-                  }
-                ;
-
-variantMap: TOK_LEFTCURLYBRACKET TOK_RIGHTCURLYBRACKET {$$ = new QVariant(QVariantMap());}
-          | TOK_LEFTCURLYBRACKET variantMapItems TOK_RIGHTCURLYBRACKET {
-                $$ = new QVariant();
-                *$$ = $2->toMap();
-            }
-          ;
-
-variantMapItems: variantMapPair {
-                     $$ = new QVariant();
-
-                     QVariantMap variantMap;
-                     QVariantList pair = $1->toList();
-
-                     variantMap[pair[0].toString()] = pair[1];
-
-                     *$$ = variantMap;
-                 }
-               | variantMapItems TOK_COMMA variantMapPair {
-                     $$ = new QVariant();
-
-                     QVariantMap variantMap($1->toMap());
-                     QVariantList pair = $3->toList();
-
-                     variantMap[pair[0].toString()] = pair[1];
-
-                     *$$ = variantMap;
-                 }
-               ;
-
-variantMapPair: TOK_STRING TOK_COLON variant {
-                    $$ = new QVariant();
-
-                    QVariantList variantList;
-
-                    variantList << $1->toString() << *$3;
-
-                    *$$ = variantList;
-                }
-              ;
-
-number: TOK_INTIGER
-      | TOK_FLOAT
-      ;
-
-%%
+*/
 
 void yyerror(const char *s)
 {

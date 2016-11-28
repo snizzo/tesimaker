@@ -51,6 +51,8 @@
     return TOK_INTIGER;
 }
 
+[ \n\t\r]+  { return TOK_WHITESPACES; }
+
  /* Parse float numbers */
 -?([0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.) {
     yylval.QVariant_t = new QVariant();
