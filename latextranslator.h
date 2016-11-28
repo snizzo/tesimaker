@@ -6,10 +6,13 @@
 
 class LatexTranslator
 {
+    //DA QUI
+    QString temp;
+    //A QUI
 public:
     LatexTranslator();
 
-    static QString translate(LanguageElement element);
+    QString translate(LanguageElement element);
 };
 
 #endif // LATEXTRANSLATOR_H

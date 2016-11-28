@@ -97,7 +97,8 @@ void MainWindow::generate()
     //translating elements to latex
     for(int i=0;i<elements.length();i++)
     {
-        latex += LatexTranslator::translate(elements.at(i));
+        LatexTranslator t;
+        latex += t.translate(elements.at(i));
     }
 
     //writing file
@@ -111,6 +112,7 @@ void MainWindow::generate()
 
     //compiling
     QProcess latexprocess;
+    latexprocess.setWorkingDirectory(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0));
     latexprocess.start("pdflatex", QStringList() << "-output-directory="+QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0) << filepath);
     latexprocess.waitForFinished();
 

@@ -46,12 +46,37 @@ QString LatexTranslator::translate(LanguageElement element)
             if(element.containsAttribute("punti")){
                 QString punti = element.getAttribute("punti");
                 output += "\\documentclass["+punti+"pt]{article}\n"
+                          "\n"
+                          "\\usepackage{graphicx}\n"
+                          "\n"
                           "\\begin{document}\n";
             }
         }
 
         if(data=="fine:tesi"){
             output += "\\end{document}\n";
+        }
+
+        //se il tag è "immagine"...
+        if(data=="immagine"){
+            //recupero il nome dell'imamgine, la dimensione e la descrizione
+            if(element.containsAttribute("dim") && element.containsAttribute("nome")){
+                QString dim = element.getAttribute("dim");
+                QString nome = element.getAttribute("nome");
+                output += "\\begin{figure}[tb]\n"
+                          "\\centering\n"
+                          "\\includegraphics[width="+dim+"\\textwidth]{"+nome+"}\n"
+                          "\\caption{";
+
+                temp = nome;
+            }
+        }
+
+        if(data=="fine:immagine"){
+            QString nome = temp;
+            output += "}\n"
+                      "\\label{"+nome+"}\n"
+                      "\\end{figure}\n";
         }
 
     } else {
