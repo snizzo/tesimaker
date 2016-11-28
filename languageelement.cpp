@@ -123,7 +123,8 @@ void LanguageElement::parseAttributes(QString str)
                     buffer.clear();
                 }
             }
-        } else {
+        }
+        if(!id.isEmpty()){
             data = id;
         }
     }

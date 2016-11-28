@@ -26,14 +26,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     aboutdialog.cpp \
     simplelatexparser.cpp \
-    languageelement.cpp
+    languageelement.cpp \
+    latextranslator.cpp
 
 HEADERS  += mainwindow.h \
     aboutdialog.h \
     lexer.l \
     parser.y \
     simplelatexparser.h \
-    languageelement.h
+    languageelement.h \
+    latextranslator.h
 
 FORMS    += mainwindow.ui \
     aboutdialog.ui

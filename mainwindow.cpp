@@ -4,12 +4,14 @@
 #include "aboutdialog.h"
 #include "simplelatexparser.h"
 #include "languageelement.h"
+#include "latextranslator.h"
 
 #include <QtGui/QColor>
 #include <QtCore/QDebug>
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QVector>
+#include <QProcess>
 
 #include "Qsci/qscilexerpython.h"
 
@@ -94,12 +96,34 @@ void MainWindow::saveFile()
 
 void MainWindow::generate()
 {
+    //splitting down simple language to elements
     QVector<LanguageElement> elements = parser->generateElements(ui->textEdit->text());
+    QString latex;
 
+    //translating elements to latex
     for(int i=0;i<elements.length();i++)
     {
-        qDebug().noquote() << elements.at(i);
+        latex += LatexTranslator::translate(elements.at(i));
     }
+
+    //writing file
+    QString filepath = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0)+"/tsmkr.tex";
+    QFile file( filepath );
+    if ( file.open(QIODevice::ReadWrite) )
+    {
+        QTextStream stream( &file );
+        stream << latex;
+    }
+
+    //compiling
+    QProcess latexprocess;
+    latexprocess.start("pdflatex", QStringList() << "-output-directory=/home/pc/Documents/" << filepath);
+    latexprocess.waitForFinished();
+
+    //opening pdf
+    QProcess openpdf;
+    openpdf.start("xdg-open", QStringList() << QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0)+"/tsmkr.pdf");
+    openpdf.waitForFinished();
 }
 
 void MainWindow::loadFile()
