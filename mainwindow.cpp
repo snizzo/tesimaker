@@ -111,7 +111,7 @@ void MainWindow::generate()
 
     //compiling
     QProcess latexprocess;
-    latexprocess.start("pdflatex", QStringList() << "-output-directory=/home/pc/Documents/" << filepath);
+    latexprocess.start("pdflatex", QStringList() << "-output-directory="+QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0) << filepath);
     latexprocess.waitForFinished();
 
     //opening pdf
