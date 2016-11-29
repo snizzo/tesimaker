@@ -77,19 +77,12 @@ void LanguageElement::parseAttributes(QString str)
                         }
                         continue;
                     case(PARAMVALUE):
-                        if(buffer.isEmpty()){
-                            continue;
-                        } else {
-                            status = PARAMID;
-                            addAttribute(buffer2,buffer);
-                            buffer.clear();
-                            buffer2.clear();
-                        }
+                        buffer.append(str[i]);
                         continue;
                     case(PARAMID):
-                    if(buffer.isEmpty()){
-                        continue;
-                    }
+                        if(buffer.isEmpty()){
+                            continue;
+                        }
                 }
             }
 
@@ -100,11 +93,25 @@ void LanguageElement::parseAttributes(QString str)
                         if(buffer.isEmpty()){
                             continue;
                         } else {
-                            status = PARAMVALUE;
+                            status = WAITVALUE;
                             buffer2 = buffer;
                             buffer.clear();
                         }
                         continue;
+                }
+            }
+
+            //ignore scintilla newline
+            if(str[i]==QLatin1Char('"')){
+                switch(status){
+                    case(WAITVALUE):
+                        status = PARAMVALUE;
+                        continue;
+                    case(PARAMVALUE):
+                        status = PARAMID;
+                        addAttribute(buffer2,buffer);
+                        buffer.clear();
+                        buffer2.clear();
                 }
             }
 

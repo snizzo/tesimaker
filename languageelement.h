@@ -22,7 +22,7 @@ class LanguageElement
     QMap<QString, QString> attributes;
 
     //internal parametere parsing
-    enum ParserStatus { TITLE,PARAMID,PARAMVALUE };
+    enum ParserStatus { TITLE,PARAMID,PARAMVALUE,WAITVALUE };
 
     public:
         LanguageElement();
