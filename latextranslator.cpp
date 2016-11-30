@@ -65,22 +65,17 @@ QString LatexTranslator::translate(LanguageElement element)
         //se il tag è "immagine"...
         if(data=="immagine"){
             //recupero il nome dell'imamgine e la dimensione
-            if(element.containsAttribute("dim") && element.containsAttribute("nome")){
-                QString dim = element.getAttribute("dim");
-                QString nome = element.getAttribute("nome");
-                output += "\\begin{figure}[tb]\n"
-                          "\\centering\n"
-                          "\\includegraphics[width="+dim+"\\textwidth]{"+nome+"}\n"
-                          "\\caption{";
-
-                temp = nome;
-            }
-        }
-
-        if(data=="fine:immagine"){
-            QString nome = temp;
-            output += "}\n"
-                      "\\label{"+nome+"}\n"
+            QString descrizione = element.getAttribute("descrizione");
+            if(descrizione.isEmpty()){ descrizione = ""; }
+            QString dim = element.getAttribute("dim");
+            if(dim.isEmpty()){ dim = ".5"; }
+            QString nome = element.getAttribute("nome");
+            if(nome.isEmpty()){ nome = ""; }
+            output += "\\begin{figure}[tb]\n"
+                      "\\centering\n"
+                      "\\includegraphics[width="+dim+"\\textwidth]{"+nome+"}\n";
+            if(!descrizione.isEmpty()){ output += "\\caption{"+descrizione+"}\n"; }
+            output += "\\label{"+nome+"}\n"
                       "\\end{figure}\n"
                       "\n";
         }
@@ -107,5 +102,5 @@ QString LatexTranslator::translate(LanguageElement element)
 
 QString LatexTranslator::getImage(QString path)
 {
-    return QString("[immagine dim=\"0.8\" nome=\""+path+"\"]");
+    return QString("[immagine dim=\".5\" nome=\""+path+"\"]");
 }
