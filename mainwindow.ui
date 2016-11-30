@@ -74,7 +74,20 @@
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuInsert">
+    <property name="title">
+     <string>Inserisci</string>
+    </property>
+    <widget class="QMenu" name="menuVisuals">
+     <property name="title">
+      <string>Visuali</string>
+     </property>
+     <addaction name="actionImage"/>
+    </widget>
+    <addaction name="menuVisuals"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuInsert"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionNew">
@@ -119,6 +132,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actionImage">
+   <property name="text">
+    <string>Immagine</string>
    </property>
   </action>
  </widget>

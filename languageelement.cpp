@@ -74,6 +74,7 @@ void LanguageElement::parseAttributes(QString str)
                             status = PARAMID;
                             id = buffer;
                             buffer.clear();
+                            continue;
                         }
                         continue;
                     case(PARAMVALUE):
@@ -112,6 +113,7 @@ void LanguageElement::parseAttributes(QString str)
                         addAttribute(buffer2,buffer);
                         buffer.clear();
                         buffer2.clear();
+                        continue;
                 }
             }
 
@@ -141,15 +143,15 @@ LanguageElement::operator QString() const
 {
     QString output;
 
-    output += "type: " + type +'\n';
-    output += "data: " + data +'\n';
+    output += "type: " + type;
+    output += "data: " + data;
 
     if(type=="tag"){
-        output += "attributes:\n";
+        output += "attributes: ";
         QMapIterator<QString, QString> i(attributes);
         while (i.hasNext()) {
             i.next();
-            output += i.key() + ": " + i.value() + '\n';
+            output += i.key() + ": " + i.value();
         }
     }
 

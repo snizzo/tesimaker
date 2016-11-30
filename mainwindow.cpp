@@ -12,6 +12,8 @@
 #include <QStandardPaths>
 #include <QVector>
 #include <QProcess>
+#include <QCursor>
+#include <QSettings>
 
 #include "Qsci/qscilexerpython.h"
 
@@ -45,6 +47,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLoad, SIGNAL(triggered(bool)), this, SLOT(loadFile()));
     connect(ui->action_Genera, SIGNAL(triggered(bool)), this, SLOT(generate()));
 
+    //saving path and thesis file persistently for later use
+    QSettings settings("ReavSoft", "TesiMaker");
+    QString projectpath = settings.value("projectpath").toString();
+    QString filepath = settings.value("projectsaved").toString();
+
+    if(!projectpath.isEmpty()){ project_path = projectpath; }
+    if(!filepath.isEmpty()){ realLoadFile(filepath); }
     /*
     QStringList translation;
 
@@ -71,8 +80,29 @@ MainWindow::~MainWindow()
 
 void MainWindow::saveFile()
 {
-    QString filepath = QFileDialog::getSaveFileName(this,"Save file",QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0),
+    QString filepath;
+    if(project_path.isEmpty()){
+        filepath = QFileDialog::getSaveFileName(this,"Save file",QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0),
                                                     "Tesi Maker (*.tmu);;All files (*.*)");
+    } else {
+        filepath = QFileDialog::getSaveFileName(this,"Save file",project_path,
+                                                    "Tesi Maker (*.tmu);;All files (*.*)");
+    }
+
+    //window has been closed without specifying a correct folder
+    if(filepath.isEmpty()){
+        return;
+    }
+
+    QDir d = QFileInfo(filepath).absoluteDir();
+    project_path = d.absolutePath();
+
+    //saving path and thesis file persistently for later use
+    QSettings settings("ReavSoft", "TesiMaker");
+    settings.setValue("projectpath", project_path);
+    settings.setValue("projectsaved", filepath);
+
+
     if(!filepath.contains(".tmu")){
         filepath = filepath + ".tmu";
     }
@@ -102,7 +132,7 @@ void MainWindow::generate()
     }
 
     //writing file
-    QString filepath = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0)+"/tsmkr.tex";
+    QString filepath = project_path+"/tsmkr.tex";
     QFile file( filepath );
     if ( file.open(QIODevice::ReadWrite) )
     {
@@ -110,30 +140,65 @@ void MainWindow::generate()
         stream << latex;
     }
 
+    //saving path and thesis file persistently for later use
+    QSettings settings("ReavSoft", "TesiMaker");
+    QString path = settings.value("projectpath").toString();
+
     //compiling
     QProcess latexprocess;
-    latexprocess.setWorkingDirectory(QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0));
-    latexprocess.start("pdflatex", QStringList() << "-output-directory="+QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0) << filepath);
+    latexprocess.setWorkingDirectory(project_path);
+    latexprocess.start("pdflatex", QStringList() << "-output-directory="+path << filepath);
     latexprocess.waitForFinished();
 
     //opening pdf
     QProcess openpdf;
-    openpdf.start("xdg-open", QStringList() << QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0)+"/tsmkr.pdf");
+    openpdf.start("xdg-open", QStringList() << path+"/tsmkr.pdf");
     openpdf.waitForFinished();
 }
 
+/**
+ * @brief used as a slot for buttons
+ */
 void MainWindow::loadFile()
 {
-    QString filepath = QFileDialog::getOpenFileName(this,"Open File",QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0),
+    //saving path and thesis file persistently for later use
+    QSettings settings("ReavSoft", "TesiMaker");
+    QString path = settings.value("projectpath").toString();
+    QString filepath;
+    if(path.isEmpty()){
+        filepath = QFileDialog::getOpenFileName(this,"Open File",QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0),
                                                     "Tesi Maker (*.tmu);;All files (*.*)");
+    } else {
+        filepath = QFileDialog::getOpenFileName(this,"Open File",path,
+                                                    "Tesi Maker (*.tmu);;All files (*.*)");
+    }
+    //window has been closed without specifying a correct folder
+    if(filepath.isEmpty()){
+        return;
+    }
 
+    QDir d = QFileInfo(filepath).absoluteDir();
+    project_path = d.absolutePath();
+
+    settings.setValue("projectpath", project_path);
+    settings.setValue("projectsaved", filepath);
+
+    realLoadFile(filepath);
+}
+
+/**
+ * @brief actually loads a file
+ * @param file
+ */
+void MainWindow::realLoadFile(QString filepath)
+{
+    qDebug() << "loading " << filepath;
     QFile file(filepath);
     QString content;
     if (file.open(QIODevice::ReadWrite)) {
         QTextStream stream(&file);
         ui->textEdit->setText(stream.readAll());
     }
-
 }
 
 /**
@@ -154,4 +219,19 @@ void MainWindow::on_actionAbout_triggered()
 {
     AboutDialog about;
     about.exec();
+}
+
+void MainWindow::on_actionImage_triggered()
+{
+    QString filepath = QFileDialog::getOpenFileName(this,"Load Image",QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).at(0),
+                                                    "All files (*.*)");
+
+    QFileInfo fileinfo(filepath);
+    QString filename(fileinfo.fileName());
+    QFile::copy(filepath, project_path+"/"+filename);
+
+    QCursor cursor = ui->textEdit->cursor();
+    int line, index;
+    ui->textEdit->getCursorPosition(&line,&index);
+    ui->textEdit->insertAt(LatexTranslator::getImage(filename),line,index);
 }

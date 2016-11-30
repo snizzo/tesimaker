@@ -13,6 +13,9 @@ public:
     LatexTranslator();
 
     QString translate(LanguageElement element);
+
+    //get code in simple code
+    static QString getImage(QString path);
 };
 
 #endif // LATEXTRANSLATOR_H

@@ -22,12 +22,17 @@ private slots:
     void on_actionAbout_triggered();
     void saveFile();
     void loadFile();
+    void realLoadFile(QString filepath);
     void generate();
     void onParsingError(QString error);
+
+    void on_actionImage_triggered();
 
 private:
     Ui::MainWindow *ui;
     SimpleLatexParser * parser;
+
+    QString project_path;
 };
 
 #endif // MAINWINDOW_H

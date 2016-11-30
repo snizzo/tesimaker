@@ -11,6 +11,7 @@ LatexTranslator::LatexTranslator()
 
 QString LatexTranslator::translate(LanguageElement element)
 {
+    qDebug() << element;
     /*
      * Stringa di output. Qualsiasi output in latex
      * andrà appeso alla fine della stringa output.
@@ -57,6 +58,7 @@ QString LatexTranslator::translate(LanguageElement element)
             output += "\\end{document}\n";
         }
 
+        qDebug() << element;
         //se il tag è "immagine"...
         if(data=="immagine"){
             //recupero il nome dell'imamgine, la dimensione e la descrizione
@@ -84,4 +86,9 @@ QString LatexTranslator::translate(LanguageElement element)
     }
 
     return output;
+}
+
+QString LatexTranslator::getImage(QString path)
+{
+    return QString("[immagine dim=\"0.8\" nome=\""+path+"\"]");
 }
