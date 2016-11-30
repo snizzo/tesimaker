@@ -48,18 +48,21 @@ QString LatexTranslator::translate(LanguageElement element)
                 output += "\\documentclass["+punti+"pt]{article}\n"
                           "\n"
                           "\\usepackage{graphicx}\n"
+                          "\\usepackage{amsmath}\n"
                           "\n"
-                          "\\begin{document}\n";
+                          "\\begin{document}\n"
+                          "\n";
             }
         }
 
         if(data=="fine:tesi"){
-            output += "\\end{document}\n";
+            output += "\n"
+                      "\\end{document}\n";
         }
 
         //se il tag è "immagine"...
         if(data=="immagine"){
-            //recupero il nome dell'imamgine, la dimensione e la descrizione
+            //recupero il nome dell'imamgine e la dimensione
             if(element.containsAttribute("dim") && element.containsAttribute("nome")){
                 QString dim = element.getAttribute("dim");
                 QString nome = element.getAttribute("nome");
@@ -76,7 +79,21 @@ QString LatexTranslator::translate(LanguageElement element)
             QString nome = temp;
             output += "}\n"
                       "\\label{"+nome+"}\n"
-                      "\\end{figure}\n";
+                      "\\end{figure}\n"
+                      "\n";
+        }
+
+        //se il tag è "equazione"...
+        if(data=="equazione"){
+            //DA AGGIUNGERE!
+            //la voglio senza numerazione? \begin{equation*}...
+                output += "\\begin{equation}\n";
+            //}
+        }
+
+        if(data=="fine:equazione"){
+            output += "\\end{equation}\n"
+                      "\n";
         }
 
     } else {
