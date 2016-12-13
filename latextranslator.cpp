@@ -48,8 +48,12 @@ QString LatexTranslator::translate(LanguageElement element)
                 QString punti = element.getAttribute("punti");
                 output += "\\documentclass["+punti+"pt]{book}\n"
                           "\n"
-                          "\\usepackage{graphicx}\n"
-                          "\\usepackage{amsmath}\n"
+                          "\\usepackage{graphicx}\n" //per imamgini
+                          "\\usepackage{amsmath}\n" //per la matematica
+                          "\\usepackage[utf8x]{inputenc}\n" //per gli accenti
+                          "\\usepackage{varioref}" //per i riferimenti
+                          "\\usepackage{blindtext}\n" //lorem ipsum per testing. Uso:
+                                                      //\blindtext o \blindtext[numero_di_ripetizioni] es \blindtext[5]
                           "\n"
                           "\\begin{document}\n"
                           "\n";
@@ -147,6 +151,21 @@ QString LatexTranslator::translate(LanguageElement element)
                 output += "\n"
                           "\\subsection{"+titolo+"}\n"
                           "\n";
+            }
+        }
+
+        if(data=="nota"){
+            if(element.containsAttribute("testo")){
+                QString testo = element.getAttribute("testo");
+                output += "\\footnote{"+testo+"}";
+            }
+        }
+
+        //nota: dà problemi se per un'immagine si fanno 2 o più riferimenti
+        if(data=="fig"){
+            if(element.containsAttribute("nome")){
+                QString nome = element.getAttribute("nome");
+                output += "fig.~\\vref{"+nome+"}";
             }
         }
 
