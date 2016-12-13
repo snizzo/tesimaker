@@ -46,7 +46,7 @@ QString LatexTranslator::translate(LanguageElement element)
             //recupero il valore di punti
             if(element.containsAttribute("punti")){
                 QString punti = element.getAttribute("punti");
-                output += "\\documentclass["+punti+"pt]{article}\n"
+                output += "\\documentclass["+punti+"pt]{book}\n"
                           "\n"
                           "\\usepackage{graphicx}\n"
                           "\\usepackage{amsmath}\n"
@@ -80,17 +80,74 @@ QString LatexTranslator::translate(LanguageElement element)
                       "\n";
         }
 
-        //se il tag è "equazione"...
-        if(data=="equazione"){
-            //DA AGGIUNGERE!
-            //la voglio senza numerazione? \begin{equation*}...
-                output += "\\begin{equation}\n";
-            //}
+        //se il tag è "formula"...
+        if(data=="formula"){
+            //numerazione o no
+            QString numerazione = element.getAttribute("numerazione");
+            if(numerazione.isEmpty()){ output += "\\begin{equation*}\n"; }
+// DA SISTEMARE (se non ha 'numerazione' metti *. Se 'numerazione'='si' allora non metterlo, altrimenti metti *
+//            if(!numerazione.isEmpty()){
+//                if(element.containsAttribute("numerazione")){
+//                    if(QString numerazione = "si"){
+//                        output += "\\begin{equation}\n";
+//                    }
+//                    else{
+//                        output += "\\begin{equation*}\n";
+//                    }
+//                }
+//            }
+//            temp = numerazione;
+       }
+
+        if(data=="fine:formula"){
+// output da cancellare dopo aver sistemato la questione della numerazione
+            output += "\n"
+                      "\\end{equation*}\n"
+                      "\n";
+//            QString numerazione = temp;
+//            if(numerazione.isEmpty()){ output += "\n"
+//                                                 "\\end{equation*}\n"
+//                                                 "\n"; }
+//            if(!numerazione.isEmpty()){
+//                if(element.containsAttribute("numerazione")){
+//                QString numerazione = "si";
+//                output += "\n"
+//                          "\\end{equation}\n"
+//                          "\n";
+//                }
+//                else{
+//                output += "\n"
+//                          "\\end{equation*}\n"
+//                          "\n";
+//                }
+//            }
         }
 
-        if(data=="fine:equazione"){
-            output += "\\end{equation}\n"
-                      "\n";
+        if(data=="capitolo"){
+            if(element.containsAttribute("titolo")){
+                QString titolo = element.getAttribute("titolo");
+                output += "\n"
+                          "\\chapter{"+titolo+"}\n"
+                          "\n";
+            }
+        }
+
+        if(data=="sezione"){
+            if(element.containsAttribute("titolo")){
+                QString titolo = element.getAttribute("titolo");
+                output += "\n"
+                          "\\section{"+titolo+"}\n"
+                          "\n";
+            }
+        }
+
+        if(data=="sottosezione"){
+            if(element.containsAttribute("titolo")){
+                QString titolo = element.getAttribute("titolo");
+                output += "\n"
+                          "\\subsection{"+titolo+"}\n"
+                          "\n";
+            }
         }
 
     } else {
