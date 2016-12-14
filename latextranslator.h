@@ -16,6 +16,11 @@ public:
 
     //get code in simple code
     static QString getImage(QString path);
+    static QString getCapitolo();
+    static QString getSezione();
+    static QString getSottosezione();
+    static QString getNota();
+    static QString getRiferimento();
 };
 
 #endif // LATEXTRANSLATOR_H

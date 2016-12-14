@@ -176,7 +176,33 @@ QString LatexTranslator::translate(LanguageElement element)
     return output;
 }
 
+//qua vanno inseriti i tag demo che vengono aggiunti con il menù "inserisci"
 QString LatexTranslator::getImage(QString path)
 {
     return QString("[immagine dim=\".5\" nome=\""+path+"\"]");
+}
+
+QString LatexTranslator::getCapitolo()
+{
+    return QString("[insert example tag]");
+}
+
+QString LatexTranslator::getSezione()
+{
+    return QString("[insert example tag]");
+}
+
+QString LatexTranslator::getSottosezione()
+{
+    return QString("[insert example tag]");
+}
+
+QString LatexTranslator::getNota()
+{
+    return QString("[insert example tag]");
+}
+
+QString LatexTranslator::getRiferimento()
+{
+    return QString("[insert example tag]");
 }

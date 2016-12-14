@@ -17,6 +17,8 @@ public:
     ~MainWindow();
 
 private slots:
+    void insertOnCursor(QString text);
+
     void on_actionQuit_triggered();
 
     void on_actionAbout_triggered();
@@ -27,6 +29,16 @@ private slots:
     void onParsingError(QString error);
 
     void on_actionImage_triggered();
+
+    void on_actionCapitolo_triggered();
+
+    void on_actionSezione_triggered();
+
+    void on_actionSottosezione_triggered();
+
+    void on_actionNota_pi_di_pagina_triggered();
+
+    void on_actionRiferimento_a_Immagine_triggered();
 
 private:
     Ui::MainWindow *ui;

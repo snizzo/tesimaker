@@ -221,6 +221,21 @@ void MainWindow::on_actionAbout_triggered()
     about.exec();
 }
 
+/**
+ * @brief helper function of menù inserisci
+ * @param text
+ */
+void MainWindow::insertOnCursor(QString text)
+{
+    QCursor cursor = ui->textEdit->cursor();
+    int line, index;
+    ui->textEdit->getCursorPosition(&line,&index);
+    ui->textEdit->insertAt(text,line,index);
+}
+
+/*
+ * Helpers of menù Inserisci
+ */
 void MainWindow::on_actionImage_triggered()
 {
     QString filepath = QFileDialog::getOpenFileName(this,"Load Image",QStandardPaths::standardLocations(QStandardPaths::DownloadLocation).at(0),
@@ -230,8 +245,30 @@ void MainWindow::on_actionImage_triggered()
     QString filename(fileinfo.fileName());
     QFile::copy(filepath, project_path+"/"+filename);
 
-    QCursor cursor = ui->textEdit->cursor();
-    int line, index;
-    ui->textEdit->getCursorPosition(&line,&index);
-    ui->textEdit->insertAt(LatexTranslator::getImage(filename),line,index);
+    insertOnCursor(LatexTranslator::getImage(filename));
+}
+
+void MainWindow::on_actionCapitolo_triggered()
+{
+    insertOnCursor(LatexTranslator::getCapitolo());
+}
+
+void MainWindow::on_actionSezione_triggered()
+{
+    insertOnCursor(LatexTranslator::getSezione());
+}
+
+void MainWindow::on_actionSottosezione_triggered()
+{
+    insertOnCursor(LatexTranslator::getSottosezione());
+}
+
+void MainWindow::on_actionNota_pi_di_pagina_triggered()
+{
+    insertOnCursor(LatexTranslator::getNota());
+}
+
+void MainWindow::on_actionRiferimento_a_Immagine_triggered()
+{
+    insertOnCursor(LatexTranslator::getRiferimento());
 }

@@ -83,8 +83,19 @@
       <string>Visuali</string>
      </property>
      <addaction name="actionImage"/>
+     <addaction name="actionRiferimento_a_Immagine"/>
+    </widget>
+    <widget class="QMenu" name="menuTipografici">
+     <property name="title">
+      <string>Tipografici</string>
+     </property>
+     <addaction name="actionCapitolo"/>
+     <addaction name="actionSezione"/>
+     <addaction name="actionSottosezione"/>
+     <addaction name="actionNota_pi_di_pagina"/>
     </widget>
     <addaction name="menuVisuals"/>
+    <addaction name="menuTipografici"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuInsert"/>
@@ -137,6 +148,31 @@
   <action name="actionImage">
    <property name="text">
     <string>Immagine</string>
+   </property>
+  </action>
+  <action name="actionCapitolo">
+   <property name="text">
+    <string>Capitolo</string>
+   </property>
+  </action>
+  <action name="actionSezione">
+   <property name="text">
+    <string>Sezione</string>
+   </property>
+  </action>
+  <action name="actionSottosezione">
+   <property name="text">
+    <string>Sottosezione</string>
+   </property>
+  </action>
+  <action name="actionNota_pi_di_pagina">
+   <property name="text">
+    <string>Nota piè di pagina</string>
+   </property>
+  </action>
+  <action name="actionRiferimento_a_Immagine">
+   <property name="text">
+    <string>Riferimento a Immagine</string>
    </property>
   </action>
  </widget>
