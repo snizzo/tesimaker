@@ -4,6 +4,8 @@
 #include <QString>
 #include <QDebug>
 
+QStack<QString> LatexTranslator::temp;
+
 LatexTranslator::LatexTranslator()
 {
 
@@ -86,45 +88,39 @@ QString LatexTranslator::translate(LanguageElement element)
 
         //se il tag è "formula"...
         if(data=="formula"){
-            //numerazione o no
-            QString numerazione = element.getAttribute("numerazione");
-            if(numerazione.isEmpty()){ output += "\\begin{equation*}\n"; }
-// DA SISTEMARE (se non ha 'numerazione' metti *. Se 'numerazione'='si' allora non metterlo, altrimenti metti *
-//            if(!numerazione.isEmpty()){
-//                if(element.containsAttribute("numerazione")){
-//                    if(QString numerazione = "si"){
-//                        output += "\\begin{equation}\n";
-//                    }
-//                    else{
-//                        output += "\\begin{equation*}\n";
-//                    }
-//                }
-//            }
-//            temp = numerazione;
+            if(!element.containsAttribute("numerazione")){
+                output += "\\begin{equation*}\n";
+                LatexTranslator::temp.push(QString(""));
+            } else {
+                QString numerazione = element.getAttribute("numerazione");
+                if(numerazione == "si"){
+                    output += "\\begin{equation}\n";
+                }
+                else{
+                    output += "\\begin{equation*}\n";
+                }
+                LatexTranslator::temp.push(numerazione);
+            }
        }
 
         if(data=="fine:formula"){
-// output da cancellare dopo aver sistemato la questione della numerazione
-            output += "\n"
-                      "\\end{equation*}\n"
-                      "\n";
-//            QString numerazione = temp;
-//            if(numerazione.isEmpty()){ output += "\n"
-//                                                 "\\end{equation*}\n"
-//                                                 "\n"; }
-//            if(!numerazione.isEmpty()){
-//                if(element.containsAttribute("numerazione")){
-//                QString numerazione = "si";
-//                output += "\n"
-//                          "\\end{equation}\n"
-//                          "\n";
-//                }
-//                else{
-//                output += "\n"
-//                          "\\end{equation*}\n"
-//                          "\n";
-//                }
-//            }
+            QString numerazione = LatexTranslator::temp.pop();
+            if(numerazione.isEmpty()){
+                output += "\n"
+                          "\\end{equation*}\n"
+                          "\n";
+            }
+            if(!numerazione.isEmpty()){
+                if(numerazione == "si"){
+                    output += "\n"
+                              "\\end{equation}\n"
+                              "\n";
+                } else {
+                    output += "\n"
+                              "\\end{equation*}\n"
+                              "\n";
+                }
+            }
         }
 
         if(data=="capitolo"){

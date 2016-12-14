@@ -1,13 +1,14 @@
 #ifndef LATEXTRANSLATOR_H
 #define LATEXTRANSLATOR_H
 
+#include <QStack>
 #include <QString>
 #include "languageelement.h"
 
 class LatexTranslator
 {
     //DA QUI
-    QString temp;
+    static QStack<QString> temp;
     //A QUI
 public:
     LatexTranslator();
