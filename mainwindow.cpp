@@ -272,3 +272,42 @@ void MainWindow::on_actionRiferimento_a_Immagine_triggered()
 {
     insertOnCursor(LatexTranslator::getRiferimento());
 }
+
+void MainWindow::on_actionSaveNow_triggered()
+{
+    QString filepath;
+    if(project_path.isEmpty()){
+        filepath = QFileDialog::getSaveFileName(this,"Save file",QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).at(0),
+                                                    "Tesi Maker (*.tmu);;All files (*.*)");
+        QDir d = QFileInfo(filepath).absoluteDir();
+        project_path = d.absolutePath();
+
+        //saving path and thesis file persistently for later use
+        QSettings settings("ReavSoft", "TesiMaker");
+        settings.setValue("projectpath", project_path);
+        settings.setValue("projectsaved", filepath);
+    } else {
+        QSettings settings("ReavSoft", "TesiMaker");
+        filepath = settings.value("projectsaved").toString();
+    }
+
+    //window has been closed without specifying a correct folder
+    if(filepath.isEmpty()){
+        return;
+    }
+
+
+    if(!filepath.contains(".tmu")){
+        filepath = filepath + ".tmu";
+    }
+    QString content = ui->textEdit->text();
+
+    QFile file( filepath );
+    if ( file.open(QIODevice::ReadWrite) )
+    {
+        QTextStream stream( &file );
+        stream << content;
+    } else {
+        qDebug() << "error saving file!";
+    }
+}

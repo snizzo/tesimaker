@@ -60,6 +60,7 @@
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionLoad"/>
+    <addaction name="actionSaveNow"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
     <addaction name="action_Genera"/>
@@ -116,7 +117,7 @@
   </action>
   <action name="actionSave">
    <property name="text">
-    <string>Salva</string>
+    <string>Salva come...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -173,6 +174,11 @@
   <action name="actionRiferimento_a_Immagine">
    <property name="text">
     <string>Riferimento a Immagine</string>
+   </property>
+  </action>
+  <action name="actionSaveNow">
+   <property name="text">
+    <string>Salva</string>
    </property>
   </action>
  </widget>

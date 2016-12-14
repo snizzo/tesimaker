@@ -40,6 +40,8 @@ private slots:
 
     void on_actionRiferimento_a_Immagine_triggered();
 
+    void on_actionSaveNow_triggered();
+
 private:
     Ui::MainWindow *ui;
     SimpleLatexParser * parser;
