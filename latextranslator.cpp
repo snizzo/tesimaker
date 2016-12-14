@@ -180,25 +180,25 @@ QString LatexTranslator::getImage(QString path)
 
 QString LatexTranslator::getCapitolo()
 {
-    return QString("[insert example tag]");
+    return QString("[capitolo titolo=\"\"]");
 }
 
 QString LatexTranslator::getSezione()
 {
-    return QString("[insert example tag]");
+    return QString("[sezione titolo=\"\"]");
 }
 
 QString LatexTranslator::getSottosezione()
 {
-    return QString("[insert example tag]");
+    return QString("[sottosezione titolo=\"\"]");
 }
 
 QString LatexTranslator::getNota()
 {
-    return QString("[insert example tag]");
+    return QString("[nota testo=\"\"]");
 }
 
 QString LatexTranslator::getRiferimento()
 {
-    return QString("[insert example tag]");
+    return QString("[fig nome=\"\"]");
 }
